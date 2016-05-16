@@ -14,15 +14,8 @@
 #include <Servo.h>
 
 //Define temp and time vars
-float maxTemperature=0;
-float minTemperature=200;
-char charMinTemperature[10];
-char charMaxTemperature[10];
 char timeChar[100];
 char dateChar[50];
-char temperatureChar[10];
-float temperature = 0;
-float previousTemperature = 0;
 String dateString;
 int minuteNow=0;
 int minutePrevious=0;
@@ -50,7 +43,7 @@ void setup () {
     pinMode(Greenpin, OUTPUT);
     pinMode(buttonPinOn, INPUT);
     pinMode(buttonPinOff, INPUT);
-    //setRTCTime();    //Uncomment and run this once to set the time on your RTC.
+    //setRTCTime();    //Uncomment and run this once to set the time on your RTC
 }
 
 void loop () {
@@ -63,8 +56,6 @@ void loop () {
     } else {
       HeatWater(0);
     }   
-  rtc.convertTemperature();
-  float temperature = Celcius2Fahrenheit(rtc.getTemperature());
   uint32_t ts = now.getEpoch();
   String hours = String(now.hour());
     
@@ -105,7 +96,6 @@ void loop () {
     dateString = dateString+String(now.date())+"/"+String(now.month());
     dateString= dateString+"/"+ String(now.year()); 
     minutePrevious = minuteNow;
-   //##original code declaration of String hours = String(now.hour());
     if(now.minute()<10)
     {
       hours = hours+":0"+String(now.minute());
@@ -118,23 +108,8 @@ void loop () {
     dateString.toCharArray(dateChar,50);
   }
   
-  if(temperature != previousTemperature)
-    {
-    previousTemperature = temperature;
-    String temperatureString = String(temperature,0);
-    temperatureString.toCharArray(temperatureChar,10);
 
-    if(temperature>maxTemperature)
-    {
-      maxTemperature = temperature;
-    }
-    if(temperature<minTemperature)
-    {
-      minTemperature = temperature;
-    }
   }
-}
-
 }
 
 
@@ -178,5 +153,3 @@ void HeatWater(int heat) { // servo to move the temp gauge between LOW and HIGH.
     Serial.println("Water heater on LOW");
   }
 }
-
-
